@@ -8,10 +8,12 @@ and open the template in the editor.
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-
+        <?php
+        include './obtenerDatos.php';
+        ?>
 
         <!--JAVASCRIPT-->
-        <script src="js/verbos.js" type="text/javascript"></script>
+        <script src="js/preguntas.json" type="text/javascript"></script>
         <script src="js/jquery.js" type="text/javascript"></script>
         <script src="js/jquery-3.2.1.js" type="text/javascript"></script>
         <script src="js/jquery-ui.min.js" type="text/javascript"></script>
@@ -89,7 +91,6 @@ and open the template in the editor.
                         <div id="niveles"></div>
                     </div>
                     <div class="col-xs-2"></div>
-
                 </div>
             </div>
             <!--PLANTILLA PREGUNTAS-->
@@ -107,18 +108,15 @@ and open the template in the editor.
                 <div class="col"><br></div>
                 <div class="row">
                     <div class="col-xs-1"></div>
-                    <div class="col-xs-10">
-                        <button class=" btn btn-default btn-lg btn-block">Pregunta</button>
+                    <div class="col-xs-10" id="enunciado">
+                    
                     </div>
                     <div class="col-xs-1"></div>
                 </div>
                 <div class="row"> 
                     <div class="col-xs-1"></div>
-                    <div class="col-xs-10">
-                        <button class=" btn btn-block btn-primary btn-lg respuestas">Respuesta 1</button>
-                        <button class=" btn btn-block btn-primary btn-lg respuestas">Respuesta 2</button>
-                        <button class=" btn btn-block btn-primary btn-lg respuestas">Respuesta 3</button>
-                        <button class=" btn btn-block btn-primary btn-lg respuestas">Respuesta 4</button>
+                    <div class="col-xs-10" id="respuestas">
+                        
                     </div>
                     <div class="col-xs-1"></div>
                 </div>
@@ -128,8 +126,6 @@ and open the template in the editor.
 
     <script>
         iniciaPartida();
-
-
         //Niveles
         function iniciaPartida() {
             //tiene que mostrar algo para que se pueda elegir el numero de 
@@ -141,6 +137,12 @@ and open the template in the editor.
                 }
             }
         }
+//        cambiaBotones();
+//
+//        function cambiaBotones() {
+//        $("#respuestas").append('<button class=" btn btn-block btn-primary btn-lg respuestas">' + $. + '</button>');
+//            
+//        }
     </script>
     <!--CAMBIAR DE MATERIAS A NIVELES-->
     <script>
@@ -167,5 +169,16 @@ and open the template in the editor.
             });
         });
     </script>
+    
+    <!--LEER FICHERO JSON-->
+    <script>
+        $.getJSON("js/preguntas.json", function(cuestiones){
+            $("#enunciado").append('<button class=" btn btn-default btn-lg btn-block">'+ cuestiones["pregunta"][0]["enunciado"] +'</button>')
+            $("#respuestas").append('<button class=" btn btn-block btn-primary btn-lg respuestas">' + cuestiones["pregunta"][0]["r1"] + '</button>');
+            $("#respuestas").append('<button class=" btn btn-block btn-primary btn-lg respuestas">' + cuestiones["pregunta"][0]["r2"] + '</button>');
+            $("#respuestas").append('<button class=" btn btn-block btn-primary btn-lg respuestas">' + cuestiones["pregunta"][0]["r3"] + '</button>');
+            $("#respuestas").append('<button class=" btn btn-block btn-primary btn-lg respuestas">' + cuestiones["pregunta"][0]["r4"] + '</button>');
+        });
+        </script>
 </body>
 </html>

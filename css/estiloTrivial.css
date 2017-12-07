@@ -7,7 +7,7 @@
 	-o-box-sizing: border-box;
 }
 body{
-     background: url('../imagenes/madera.jpg')center center  no-repeat fixed;
+     /*background: url('../imagenes/madera.jpg')center center  no-repeat fixed;*/
      background-size: cover;
      overflow-x: hidden;
 margin: 0;
