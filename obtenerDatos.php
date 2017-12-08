@@ -1,5 +1,7 @@
 <?php
 
+
+$asignatura = $_POST['materia'];
 function conectar() {
 
     $server = "localhost";
@@ -67,7 +69,7 @@ function obtenerArraySQL($sql) {
     $archivo="js/preguntas.json";
     $file= fopen($archivo, "w");
     
-    $sql = "SELECT tema, enunciado, r1, r2, r3, r4, correcta FROM preguntas ORDER BY tema ASC";
+    $sql = "SELECT tema, enunciado, r1, r2, r3, r4, correcta FROM preguntas WHERE tema = '$asignatura' ORDER BY tema ASC";
     
     $preguntas = obtenerArraySQL($sql);
     $contenidoJson= json_encode($preguntas, 128);

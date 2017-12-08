@@ -9,7 +9,7 @@ and open the template in the editor.
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
         <?php
-        include './obtenerDatos.php';
+//        include './obtenerDatos.php';
         ?>
 
         <!--JAVASCRIPT-->
@@ -49,25 +49,25 @@ and open the template in the editor.
                         <div class="col"><br></div>
                         <div class="btn-group-vertical col-xs-12">
                             <div id="acordeon">
-                                <button id="btn-historia"class="btn btn-block btn-danger btn-lg">Historia</button>
+                                <button class="btn btn-block btn-danger btn-lg" value="historia">Historia</button>
                                 <div class="text-center">
-                                    <button class="btn btn-lg btn-success jugar">Elegir Nivel</button>
+                                    <button id="btn-historia" class="btn btn-lg btn-success jugar" value="historia" onclick="filtrarPorAsignatura('Historia')">Elegir Nivel</button>
                                 </div>
-                                <button id="btn-historia"class="btn btn-block btn-primary btn-lg">Inglés</button>
+                                <button class="btn btn-block btn-primary btn-lg temas" value="ingles">Inglés</button>
                                 <div class="text-center">
-                                    <button class="btn btn-lg btn-success jugar">Elegir Nivel</button>
+                                    <button  id="btn-ingles"class="btn btn-lg btn-success jugar temas" value="ingles" onclick="filtrarPorAsignatura('Ingles')" >Elegir Nivel</button>
                                 </div>
-                                <button id="btn-historia"class="btn btn-block btn-primary btn-lg">Lengua</button>
+                                <button class="btn btn-block btn-primary btn-lg" value="lengua">Lengua</button>
                                 <div class="text-center">
-                                    <button class="btn btn-lg btn-success jugar">Elegir Nivel</button>
+                                    <button  id="btn-lengua"class="btn btn-lg btn-success jugar temas"  value="lengua" onclick="filtrarPorAsignatura('Lengua')" >Elegir Nivel</button>
                                 </div>
-                                <button id="btn-historia"class="btn btn-block btn-primary btn-lg">Economía</button>
+                                <button class="btn btn-block btn-primary btn-lg" value="economia">Economía</button>
                                 <div class="text-center">
-                                    <button class="btn btn-lg btn-success jugar">Elegir Nivel</button>
+                                    <button id="btn-economia" class="btn btn-lg btn-success jugar temas" value="economia" onclick="filtrarPorAsignatura('Economia')" >Elegir Nivel</button>
                                 </div>
-                                <button id="btn-historia"class="btn btn-block btn-primary btn-lg">Filosofía</button>
+                                <button class="btn btn-block btn-primary btn-lg" value="filosofia">Filosofía</button>
                                 <div class="text-center">
-                                    <button class="btn btn-lg btn-success jugar">Elegir Nivel</button>
+                                    <button id="btn-filosofia" class="btn btn-lg btn-success jugar temas" value="filosofia" onclick="filtrarPorAsignatura('Filosofia')" >Elegir Nivel</button>
                                 </div>
                             </div>
                         </div>
@@ -109,14 +109,13 @@ and open the template in the editor.
                 <div class="row">
                     <div class="col-xs-1"></div>
                     <div class="col-xs-10" id="enunciado">
-                    
+
                     </div>
                     <div class="col-xs-1"></div>
                 </div>
                 <div class="row"> 
                     <div class="col-xs-1"></div>
                     <div class="col-xs-10" id="respuestas">
-                        
                     </div>
                     <div class="col-xs-1"></div>
                 </div>
@@ -137,6 +136,7 @@ and open the template in the editor.
                 }
             }
         }
+
 //        cambiaBotones();
 //
 //        function cambiaBotones() {
@@ -169,16 +169,83 @@ and open the template in the editor.
             });
         });
     </script>
-    
+
     <!--LEER FICHERO JSON-->
     <script>
-        $.getJSON("js/preguntas.json", function(cuestiones){
-            $("#enunciado").append('<button class=" btn btn-default btn-lg btn-block">'+ cuestiones["pregunta"][0]["enunciado"] +'</button>')
-            $("#respuestas").append('<button class=" btn btn-block btn-primary btn-lg respuestas">' + cuestiones["pregunta"][0]["r1"] + '</button>');
-            $("#respuestas").append('<button class=" btn btn-block btn-primary btn-lg respuestas">' + cuestiones["pregunta"][0]["r2"] + '</button>');
-            $("#respuestas").append('<button class=" btn btn-block btn-primary btn-lg respuestas">' + cuestiones["pregunta"][0]["r3"] + '</button>');
-            $("#respuestas").append('<button class=" btn btn-block btn-primary btn-lg respuestas">' + cuestiones["pregunta"][0]["r4"] + '</button>');
-        });
-        </script>
+        var posicion;
+        var longitud;
+        var correcta;
+        function crearJSON() {
+            $.getJSON("js/preguntas.json", function (cuestiones) {
+                longitud = Object.keys(cuestiones["pregunta"]).length;
+                posicion = Math.floor(Math.random() * longitud);
+                correcta = cuestiones["pregunta"][posicion]["correcta"];
+                console.log(correcta);
+
+                $("#enunciado").append('<button class=" btn btn-default btn-lg btn-block">' + cuestiones["pregunta"][posicion]["enunciado"] + '</button>');
+                $("#respuestas").append('<button id="btn-1" class=" btn btn-block btn-primary btn-lg respuestas" value="1" onclick="comprueba(correcta,1, this)">' + cuestiones["pregunta"][posicion]["r1"] + '</button>');
+                $("#respuestas").append('<button id="btn-2" class=" btn btn-block btn-primary btn-lg respuestas" value="2" onclick="comprueba(correcta,2, this)">' + cuestiones["pregunta"][posicion]["r2"] + '</button>');
+                $("#respuestas").append('<button id="btn-3"class=" btn btn-block btn-primary btn-lg respuestas"  value="3" onclick="comprueba(correcta,3, this)">' + cuestiones["pregunta"][posicion]["r3"] + '</button>');
+                $("#respuestas").append('<button id="btn-4"class=" btn btn-block btn-primary btn-lg respuestas"  value="4" onclick="comprueba(correcta,4, this)">' + cuestiones["pregunta"][posicion]["r4"] + '</button>');
+            }
+            );
+        }
+    </script>
+
+    <script>
+        function filtrarPorAsignatura(materia) {
+            console.log(materia);
+            var parametro = {
+                "materia": materia
+            };
+
+            $.ajax({
+                data: parametro,
+                url: "obtenerDatos.php",
+                type: 'POST',
+                success: function (response) {
+                    crearJSON();
+                    console.log("he pasado");
+                }
+            });
+        }
+    </script>
+
+    <script>
+        function comprueba(_correcta, seleccionada, comp) {
+            var correcta = _correcta;
+            var eleccion = seleccionada;
+            var id = comp.id;
+            console.log("El boton es:" + id);
+            console.log(correcta);
+            console.log(eleccion);
+
+            if (correcta == eleccion) {
+                $("#"+id).text("CORRECTO")
+                        .addClass("btn btn-block btn-success btn-lg")
+                        .fadeOut("slow")
+                        .fadeIn("slow", function () {
+                            sigue(id);
+                        });
+                console.log("adios");
+            }else{
+                $("#"+id).text("INCORRECTO")
+                        .addClass("btn btn-block btn-danger btn-lg")
+                        .fadeOut("slow")
+                        .fadeIn("slow", function () {
+                            sigue(id);
+                        });
+            }
+        }
+        
+        function sigue(id){
+            $("#enunciado").text('');
+            $("#respuestas").text('');
+            crearJSON();
+        }
+        
+        
+    </script>
+
 </body>
 </html>
