@@ -36,13 +36,13 @@ and open the template in the editor.
     </head>
     <body>
         <?php
-//        $ingles = $_GET['ingles'];
-//        $lengua = $_GET['lengua'];
-//        $historia = $_GET['historia'];
-//        $economia = $_GET['economia'];
-//        $filosofia = $_GET['filosofia'];
-//        $usuario = $_GET['usuario'];
-        $usuario = "rojo5";
+        $ingles = $_GET['ingles'];
+        $lengua = $_GET['lengua'];
+        $historia = $_GET['historia'];
+        $economia = $_GET['economia'];
+        $filosofia = $_GET['filosofia'];
+        $usuario = $_GET['usuario'];
+//        $usuario = "rojo5";
         ?>
         <script>
             var historia;
@@ -51,8 +51,9 @@ and open the template in the editor.
             var economia;
             var filosofia;
             var usuario = "<?php echo $usuario; ?>";
-            console.log(usuario);
+            
             obtenerNivel();
+            console.log(usuario);
             function obtenerNivel() {
                 var parametro = {
                     "usuario": usuario
@@ -81,16 +82,26 @@ and open the template in the editor.
         </script>
         <!--CABECERA-->
         <div class="row cabecera">
-            <div class="col-xs-12">
-                <h1 class="text-center titulo"> Test Selectividad</h1>
+            <div class="row">
+                <div class="col-xs-12">
+                    <h1 class="text-center titulo"> Test Selectividad</h1>
+                </div>
             </div>
-        </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <a class="enlace" href="cerrarSesion.php"><button class="btn btn-danger btn-block btn-lg">CERRAR SESIÓN</button></a>
+                </div>
+            </div>
+
+        
         <div class="container">
             <div class="row">
                 <div class="col-xs-12 botones">
                     <div class="row" id="opcion">
                         <div class="col"><br></div>
                         <div class="btn-group-vertical col-xs-12">
+                            <script>obtenerNivel();</script>
                             <div id="acordeon">
                                 <button class="btn btn-block btn-danger btn-lg" value="historia">Historia</button>
                                 <div class="text-center">
@@ -186,7 +197,7 @@ and open the template in the editor.
         //Niveles
         function iniciaPartida(desbloquea) {
             maxNivel = desbloquea;
-            console.log(desbloquea);
+            console.log("desbloquea " +desbloquea);
             $('#niveles').text("");
             //tiene que mostrar algo para que se pueda elegir el numero de 
             //verbos con el que se va a jugar

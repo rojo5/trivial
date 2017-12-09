@@ -27,17 +27,14 @@ and open the template in the editor.
         <link rel="stylesheet" href="/resources/demos/style.css">
         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        
+        
 
     </head>
     <body id="prueba">
         <div id="container">
 
-            <div id="dialog" title="La verdad">
-                <p>¿Quieres ver la verdad?</p>
-                <button id="laVerdad" class=" btn btn-block btn-danger" onclick="cambiafondo()">Mostrar</button>
-            </div>
-
-            <button id="opener" class="btn btn-danger">La verdad</button>
+            
 
 
             <div class="form">
@@ -80,14 +77,14 @@ and open the template in the editor.
                     <div id="signup">   
                         <h1>Registro</h1>
 
-                        <form action="/" method="post">
+                        <form action="registro.php" method="post">
 
 
                             <div class="field-wrap">
                                 <label>
                                     Usuario
                                 </label>
-                                <input type="text" required>
+                                <input type="text" id="rUsuario" name="rUsuario"required>
                             </div>
 
 
@@ -95,20 +92,20 @@ and open the template in the editor.
                                 <label>
                                     Correo Electronico
                                 </label>
-                                <input type="email" required>
+                                <input type="email" id="rMail" name="rMail" required>
                             </div>
 
                             <div class="field-wrap">
                                 <label>
                                     Contraseña
                                 </label>
-                                <input type="password" required>
+                                <input type="password" id="rPass" name="rPass" required>
                             </div>
                             <div class="field-wrap">
                                 <label>
                                     Repetir contraseña
                                 </label>
-                                <input type="password" required>
+                                <input type="password"  id="rPass2" name="rPass2"required>
                             </div>
 
                             <button type="submit" class="button button-block">Registrarse</button>
@@ -121,6 +118,34 @@ and open the template in the editor.
 
             </div> <!-- /form -->        
         </div>
+        
+        <?php
+        if(empty($_GET)){
+            
+        }else{
+            $valor;
+            if(($valor=$_GET['registro'])){
+                if($valor==true){
+                    echo '<script>alert("Te has registrado correctamente...");</script>';
+                }
+            }
+            if(($valor=$_GET['incorrecto'])){
+                if($valor==true){
+                    echo '<script>alert("Usuario o contraseña incorrectos...");</script>';
+                }
+            }
+            if(($valor=$_GET['existe'])){
+                if($valor==true){
+                    echo '<script>alert("El usuario ya existe...");</script>';
+                }
+            }
+            if(($valor=$_GET['passIncorrecta'])){
+                if($valor==true){
+                    echo '<script>alert("Las contraseñas no coinciden...");</script>';
+                }
+            }
+            }
+        ?>
 
 
         <!-- FUNCIONES -->

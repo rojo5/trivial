@@ -32,12 +32,5 @@ if ($password === $row['password']) {
     header('Location: trivial.php?usuario=' . $row['usuario'] . '&ingles=' . $row['nvIngles'] . '&historia=' . $row['nvHistoria'] . '&lengua=' . $row['nvLengua'] . '&economia=' . $row['nvEconomia'] . '&filosofia=' . $row['nvFilosofia']);
 } else {
 
-    print_r($row['password']);
-
-
-    echo "<br>";
-
-    echo "Username o Password estan incorrectos.";
-
-    echo "<br><a href='index.html'>Volver a Intentarlo</a>";
+    header('Location: index.php?incorrecto=true');
 }
