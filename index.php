@@ -22,11 +22,11 @@ and open the template in the editor.
         <script src="js/jquery-ui.min.js" type="text/javascript"></script>
         <script src="js/bootstrap.min.js" type="text/javascript"></script>
         <script src="js/jquery.raty.js" type="text/javascript"></script>
-        
+
         <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  <link rel="stylesheet" href="/resources/demos/style.css">
-  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <link rel="stylesheet" href="/resources/demos/style.css">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     </head>
     <body id="prueba">
@@ -188,11 +188,11 @@ and open the template in the editor.
                     $("#dialog").dialog("open");
                 });
             });
-            
-            
-            function cambiafondo(){
+
+
+            function cambiafondo() {
                 document.body.style.backgroundImage = "url('/Trivial/imagenes/ussr.jpg')";
-                document.getElementById('dialog').innerHTML = "<audio autoplay><source src='temazo.mp3' type='audio/mpeg'></audio>";  
+                document.getElementById('dialog').innerHTML = "<audio autoplay><source src='temazo.mp3' type='audio/mpeg'></audio>";
             }
         </script>
     </body>

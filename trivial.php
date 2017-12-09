@@ -31,8 +31,53 @@ and open the template in the editor.
                 $("#acordeon").accordion();
             });
         </script>
+
+
     </head>
     <body>
+        <?php
+//        $ingles = $_GET['ingles'];
+//        $lengua = $_GET['lengua'];
+//        $historia = $_GET['historia'];
+//        $economia = $_GET['economia'];
+//        $filosofia = $_GET['filosofia'];
+        $usuario = $_GET['usuario'];
+        ?>
+        <script>
+            var historia;
+            var lengua;
+            var ingles;
+            var economia;
+            var filosofia;
+            var usuario = "<?php echo $usuario; ?>";
+            console.log(usuario);
+            obtenerNivel();
+            function obtenerNivel() {
+                var parametro = {
+                    "usuario": usuario
+                };
+
+                $.ajax({
+                    data: parametro,
+                    url: "checkNiveles.php",
+                    type: 'POST',
+                    success: function (response) {
+                        console.log("OK");
+                    }
+                });
+                comprobarNivel();
+            }
+            function comprobarNivel() {
+                $.getJSON("js/niveles.json", function (niveles) {
+                    historia = niveles["niveles"][0]["nvHistoria"];
+                    lengua = niveles["niveles"][0]["nvLengua"];
+                    ingles = niveles["niveles"][0]["nvIngles"];
+                    economia = niveles["niveles"][0]["nvEconomia"];
+                    filosofia = niveles["niveles"][0]["nvFilosofia"];
+                });
+            }
+
+        </script>
         <!--CABECERA-->
         <div class="row cabecera">
             <div class="col-xs-12">
@@ -48,23 +93,23 @@ and open the template in the editor.
                             <div id="acordeon">
                                 <button class="btn btn-block btn-danger btn-lg" value="historia">Historia</button>
                                 <div class="text-center">
-                                    <button id="btn-historia" class="btn btn-lg btn-success jugar" value="historia" onclick="filtrarPorAsignatura('Historia')">Elegir Nivel</button>
+                                    <button id="btn-historia" class="btn btn-lg btn-success jugar" value="historia" onclick="iniciaPartida(historia); filtrarPorAsignatura('Historia')">Elegir Nivel</button>
                                 </div>
                                 <button class="btn btn-block btn-primary btn-lg temas" value="ingles">Inglés</button>
                                 <div class="text-center">
-                                    <button  id="btn-ingles"class="btn btn-lg btn-success jugar temas" value="ingles" onclick="filtrarPorAsignatura('Ingles')" >Elegir Nivel</button>
+                                    <button  id="btn-ingles"class="btn btn-lg btn-success jugar temas" value="ingles" onclick="iniciaPartida(ingles); filtrarPorAsignatura('Ingles')" >Elegir Nivel</button>
                                 </div>
                                 <button class="btn btn-block btn-primary btn-lg" value="lengua">Lengua</button>
                                 <div class="text-center">
-                                    <button  id="btn-lengua"class="btn btn-lg btn-success jugar temas"  value="lengua" onclick="filtrarPorAsignatura('Lengua')" >Elegir Nivel</button>
+                                    <button  id="btn-lengua"class="btn btn-lg btn-success jugar temas"  value="lengua" onclick="iniciaPartida(lengua); filtrarPorAsignatura('Lengua')" >Elegir Nivel</button>
                                 </div>
                                 <button class="btn btn-block btn-primary btn-lg" value="economia">Economía</button>
                                 <div class="text-center">
-                                    <button id="btn-economia" class="btn btn-lg btn-success jugar temas" value="economia" onclick="filtrarPorAsignatura('Economia')" >Elegir Nivel</button>
+                                    <button id="btn-economia" class="btn btn-lg btn-success jugar temas" value="economia" onclick="iniciaPartida(economia); filtrarPorAsignatura('Economia')" >Elegir Nivel</button>
                                 </div>
                                 <button class="btn btn-block btn-primary btn-lg" value="filosofia">Filosofía</button>
                                 <div class="text-center">
-                                    <button id="btn-filosofia" class="btn btn-lg btn-success jugar temas" value="filosofia" onclick="filtrarPorAsignatura('Filosofia')" >Elegir Nivel</button>
+                                    <button id="btn-filosofia" class="btn btn-lg btn-success jugar temas" value="filosofia" onclick="iniciaPartida(filosofia); filtrarPorAsignatura('Filosofia')" >Elegir Nivel</button>
                                 </div>
                             </div>
                         </div>
@@ -105,25 +150,25 @@ and open the template in the editor.
                 <div class="row">
                     <div class="titulo text-center">
                         <h3 class="grosor">
-                            <span id="1"class="text-">1</span>
-                            <span id="2">2</span>
-                            <span id="3">3</span>
-                            <span id="4">4</span>
-                            <span id="5">5</span>
-                            <span id="6">6</span>
-                            <span id="7">7</span>
-                            <span id="8">8</span>
-                            <span id="9">9</span>
-                            <span id="10">10</span>
+                            <span id="c1">1</span>
+                            <span id="c2">2</span>
+                            <span id="c3">3</span>
+                            <span id="c4">4</span>
+                            <span id="c5">5</span>
+                            <span id="c6">6</span>
+                            <span id="c7">7</span>
+                            <span id="c8">8</span>
+                            <span id="c9">9</span>
+                            <span id="c10">10</span>
 
                         </h3>
                     </div>
                 </div>
                 <div class="col"><br></div>
                 <div class="row">
-                    <div class="col-xs-1"></div>
-                    <div class="col-xs-10" id="enunciado"></div>
-                    <div class="col-xs-1"></div>
+
+                    <div class="col-xs-13" id="enunciado"></div>
+
                 </div>
                 <div class="row"> 
                     <div class="col-xs-1"></div>
@@ -135,17 +180,47 @@ and open the template in the editor.
     </div>
 
     <script>
-        iniciaPartida();
+        var numNivel;
+        var maxNivel;
         //Niveles
-        function iniciaPartida() {
+        function iniciaPartida(desbloquea) {
+            maxNivel = desbloquea;
+            console.log(desbloquea);
+            $('#niveles').text("");
             //tiene que mostrar algo para que se pueda elegir el numero de 
             //verbos con el que se va a jugar
-            for (var i = 1; i < 11; i++) {
-                $('#niveles').append('<div class="miniboton btn-group"> <button class="miniboton btn btn-lg btn-primary" onclick=""> ' + i * 1 + '</button></div>');
-                if (i === 5) {
+            console.log("Justo antes de entrar " + desbloquea);
+            for (var i = 1; i <= desbloquea; i++) {
+                if (i == desbloquea) {
+                    $('#niveles').append('<div class="miniboton btn-group"> <button id="' + i + '" class="miniboton btn btn-lg btn-primary" onclick="ultimoNivel(this)" value="' + i + '">' + i * 1 + '</button></div>');
+                    if (i === 5) {
+                        $('#niveles').append('<p></p>');
+                    }
+                } else {
+                    $('#niveles').append('<div class="miniboton btn-group"> <button id="' + i + '" class="miniboton btn btn-lg btn-primary" onclick="">' + i * 1 + '</button></div>');
+                    if (i === 5) {
+                        $('#niveles').append('<p></p>');
+                    }
+                }
+            }
+            for (var u = i; u < 11; u++) {
+                $('#niveles').append('<div class="miniboton btn-group"> <button id="' + u + '" class="miniboton btn btn-lg btn-primary" onclick="" disabled>' + u * 1 + '</button></div>');
+                if (u === 5) {
                     $('#niveles').append('<p></p>');
                 }
             }
+            //CAMBIAR DE NIVELES  A PREGUNTAS
+            $(document).ready(function () {
+                $(".miniboton").on("click", function () {
+                    $('#nivel').fadeOut();
+                    $('#preguntas').fadeIn('slow');
+                });
+            });
+        }
+
+        function ultimoNivel(valor) {
+            numNivel = valor.id;
+
         }
 
     </script>
@@ -165,16 +240,6 @@ and open the template in the editor.
             });
         });
     </script>
-    <!--CAMBIAR DE NIVELES  A PREGUNTAS-->
-    <script>
-        $(document).ready(function () {
-            $(".miniboton").on("click", function () {
-                $('#nivel').fadeOut();
-                $('#preguntas').fadeIn('slow');
-            });
-        });
-
-    </script>
 
     <!--LEER FICHERO JSON-->
     <script>
@@ -183,14 +248,17 @@ and open the template in the editor.
         var correcta;
         var contador = 1;
         var aciertos = 0;
+        var modulo;
+
 
         function crearJSON() {
             $.getJSON("js/preguntas.json", function (cuestiones) {
                 longitud = Object.keys(cuestiones["pregunta"]).length;
                 posicion = Math.floor(Math.random() * longitud);
                 correcta = cuestiones["pregunta"][posicion]["correcta"];
-                $("#" + contador).addClass("text-primary");
-                
+                $("#c" + contador).addClass("text-primary");
+                console.log("Respuesta " + correcta);
+
                 $("#enunciado").append('<button class=" btn btn-default btn-lg btn-block">' + cuestiones["pregunta"][posicion]["enunciado"] + '</button>');
                 $("#respuestas").append('<button id="btn-1" class=" btn btn-block btn-primary btn-lg respuestas" value="1" onclick="comprueba(correcta,1, this)">' + cuestiones["pregunta"][posicion]["r1"] + '</button>');
                 $("#respuestas").append('<button id="btn-2" class=" btn btn-block btn-primary btn-lg respuestas" value="2" onclick="comprueba(correcta,2, this)">' + cuestiones["pregunta"][posicion]["r2"] + '</button>');
@@ -202,6 +270,7 @@ and open the template in the editor.
 
         function filtrarPorAsignatura(materia) {
             console.log(materia);
+            modulo = materia;
             var parametro = {
                 "materia": materia
             };
@@ -214,7 +283,7 @@ and open the template in the editor.
                     $("#enunciado").text('');
                     $("#respuestas").text('');
                     crearJSON();
-                    
+
                 }
             });
         }
@@ -223,8 +292,7 @@ and open the template in the editor.
             var correcta = _correcta;
             var eleccion = seleccionada;
             var id = comp.id;
-            
-            console.log("Respuesta "+correcta);
+
             $(".respuestas").on("click", function () {
                 $(".respuestas").prop('disabled', true);
             });
@@ -237,21 +305,21 @@ and open the template in the editor.
                         .addClass("btn btn-block btn-success btn-lg")
                         .fadeOut("slow")
                         .fadeIn("slow", function () {
-                            $("#" + contador).addClass("text-success");
+                            $("#c" + contador).addClass("text-success");
                             sigue();
                             contador++;
-                            $("#" + contador).addClass("text-primary");
+                            $("#c" + contador).addClass("text-primary");
                         });
-                
+
             } else {
                 $("#" + id).text("INCORRECTO")
                         .addClass("btn btn-block btn-danger btn-lg")
                         .fadeOut("slow")
                         .fadeIn("slow", function () {
-                            $("#" + contador).addClass("text-danger");
+                            $("#c" + contador).addClass("text-danger");
                             sigue();
                             contador++;
-                            $("#" + contador).addClass("text-primary");
+                            $("#c" + contador).addClass("text-primary");
                         });
             }
 
@@ -267,8 +335,35 @@ and open the template in the editor.
                 $("#respuestas").text('');
                 $("#enunciado").append('<h1 class="titulo text-center">¡¡¡Has acabado el nivel!!!</h1>');
                 $("#respuestas").append('<h3 class="titulo text-center">Has acertado: ' + aciertos + ' de 10</h3>');
+                console.log(usuario);
                 if (aciertos >= 5) {
+                    console.log("numNivel: " + numNivel + "maxNivel: " + maxNivel);
+                    if (numNivel == maxNivel) {
+                        console.log("Me cole");
+                        numNivel++;
+                        modulo = "nv" + modulo;
+                        console.log("materia " + modulo + " nivel " + numNivel + " usuario " + usuario);
+                        var parametro = {
+                            "materia": modulo,
+                            "nivel": numNivel,
+                            "usuario": usuario
+                        };
+
+                        $.ajax({
+                            data: parametro,
+                            url: "actualizarDatos.php",
+                            type: 'POST',
+                            success: function (response) {
+                                console.log("Nivel actualiado // " + maxNivel);
+                                obtenerNivel();
+                                maxNivel++;
+                                console.log(maxNivel);
+                                iniciaPartida(maxNivel);
+                            }
+                        });
+                    }
                     $("#respuestas").append('<button class="btn btn-block btn-success btn-lg yoda">Elegir nivel</button>');
+
                 } else {
                     $("#respuestas").append('<button class="btn btn-block btn-danger btn-lg yoda">Elegir nivel</button>');
                 }
@@ -290,9 +385,9 @@ and open the template in the editor.
             $("#respuestas").text('');
             crearJSON();
             for (var i = 1; i <= 10; i++) {
-                $("#" + i).removeClass("text-danger");
-                $("#" + i).removeClass("text-success");
-                $("#" + i).removeClass("text-primary");
+                $("#c" + i).removeClass("text-danger");
+                $("#c" + i).removeClass("text-success");
+                $("#c" + i).removeClass("text-primary");
             }
         }
     </script>
