@@ -41,7 +41,8 @@ and open the template in the editor.
 //        $historia = $_GET['historia'];
 //        $economia = $_GET['economia'];
 //        $filosofia = $_GET['filosofia'];
-        $usuario = $_GET['usuario'];
+//        $usuario = $_GET['usuario'];
+        $usuario = "rojo5";
         ?>
         <script>
             var historia;
@@ -142,8 +143,8 @@ and open the template in the editor.
                 <div clas="row">
                     <h3 class="text-center titulo">CUENTA ANTRAS</h3>
                     <div class="progress">
-                        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:40%">
-                            40%
+                        <div id="barraProgreso" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:0%">
+                            <span id="porcentaje"></span>
                         </div>
                     </div>
                 </div>
@@ -249,9 +250,11 @@ and open the template in the editor.
         var contador = 1;
         var aciertos = 0;
         var modulo;
+        var stopBarra;
 
 
         function crearJSON() {
+
             $.getJSON("js/preguntas.json", function (cuestiones) {
                 longitud = Object.keys(cuestiones["pregunta"]).length;
                 posicion = Math.floor(Math.random() * longitud);
@@ -259,14 +262,20 @@ and open the template in the editor.
                 $("#c" + contador).addClass("text-primary");
                 console.log("Respuesta " + correcta);
 
+
+//                        $("#progreso").append('<div id="barraProgreso" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:100%">100</div>')
+
+                move();
                 $("#enunciado").append('<button class=" btn btn-default btn-lg btn-block">' + cuestiones["pregunta"][posicion]["enunciado"] + '</button>');
-                $("#respuestas").append('<button id="btn-1" class=" btn btn-block btn-primary btn-lg respuestas" value="1" onclick="comprueba(correcta,1, this)">' + cuestiones["pregunta"][posicion]["r1"] + '</button>');
-                $("#respuestas").append('<button id="btn-2" class=" btn btn-block btn-primary btn-lg respuestas" value="2" onclick="comprueba(correcta,2, this)">' + cuestiones["pregunta"][posicion]["r2"] + '</button>');
-                $("#respuestas").append('<button id="btn-3"class=" btn btn-block btn-primary btn-lg respuestas"  value="3" onclick="comprueba(correcta,3, this)">' + cuestiones["pregunta"][posicion]["r3"] + '</button>');
-                $("#respuestas").append('<button id="btn-4"class=" btn btn-block btn-primary btn-lg respuestas"  value="4" onclick="comprueba(correcta,4, this)">' + cuestiones["pregunta"][posicion]["r4"] + '</button>');
+                $("#respuestas").append('<button id="btn-1" class=" btn btn-block btn-primary btn-lg respuestas" value="1" onclick="comprueba(correcta,1, this); stopBarra=true;">' + cuestiones["pregunta"][posicion]["r1"] + '</button>');
+                $("#respuestas").append('<button id="btn-2" class=" btn btn-block btn-primary btn-lg respuestas" value="2" onclick="comprueba(correcta,2, this); stopBarra=true;">' + cuestiones["pregunta"][posicion]["r2"] + '</button>');
+                $("#respuestas").append('<button id="btn-3"class=" btn btn-block btn-primary btn-lg respuestas"  value="3" onclick="comprueba(correcta,3, this); stopBarra=true;" >' + cuestiones["pregunta"][posicion]["r3"] + '</button>');
+                $("#respuestas").append('<button id="btn-4"class=" btn btn-block btn-primary btn-lg respuestas"  value="4" onclick="comprueba(correcta,4, this); stopBarra=true;" >' + cuestiones["pregunta"][posicion]["r4"] + '</button>');
+
             }
             );
         }
+
 
         function filtrarPorAsignatura(materia) {
             console.log(materia);
@@ -288,16 +297,15 @@ and open the template in the editor.
             });
         }
 
+
+
         function comprueba(_correcta, seleccionada, comp) {
-            var correcta = _correcta;
-            var eleccion = seleccionada;
-            var id = comp.id;
-
-            $(".respuestas").on("click", function () {
-                $(".respuestas").prop('disabled', true);
-            });
+            var correcta = _correcta;           //
+            var eleccion = seleccionada;        //
+            var id = comp.id;                   //
 
 
+            $(".respuestas").prop('disabled', true);
 
             if (correcta == eleccion) {
                 aciertos++;
@@ -389,6 +397,36 @@ and open the template in the editor.
                 $("#c" + i).removeClass("text-success");
                 $("#c" + i).removeClass("text-primary");
             }
+        }
+
+        function move() {
+            var elem = document.getElementById("barraProgreso");
+            var width = -2;
+            var id2 = setInterval(frame, 200);
+            function frame() {
+                if ((width >= 100) || (stopBarra == true)) {
+                    clearInterval(id2);
+                    if (width >= 100) {
+                        seAcaboTiempo();
+                    }
+                    stopBarra = false;
+                } else {
+                    width++;
+                    document.getElementById("porcentaje").innerHTML = width + '%';
+                    elem.style.width = width + '%';
+                }
+            }
+        }
+
+        function seAcaboTiempo() {
+            $(".respuestas").prop('disabled', true)
+                    .text("INCORRECTO")
+                    .addClass("btn btn-block btn-danger btn-lg");
+
+            $("#c" + contador).addClass("text-danger");
+            sigue();
+            contador++;
+            $("#c" + contador).addClass("text-primary");
         }
     </script>
 </body>
