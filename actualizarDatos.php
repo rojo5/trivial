@@ -1,5 +1,6 @@
 <?php
-
+//Este archivo se encarga de actualizar el nivel de la materia en la que se ha 
+//superado la prueba
 $asignatura = $_POST['materia'];
 $nivel = $_POST['nivel'];
 $user = $_POST['usuario'];

@@ -46,7 +46,7 @@ and open the template in the editor.
 
                 <div class="tab-content">
 
-
+                    <!--INICIAR SESION-->
                     <div id="login">   
                         <h1>Iniciar sesión</h1>
 
@@ -73,7 +73,7 @@ and open the template in the editor.
                         </form>
 
                     </div>
-
+                    <!--REGISTRO-->
                     <div id="signup">   
                         <h1>Registro</h1>
 
@@ -120,6 +120,8 @@ and open the template in the editor.
         </div>
         
         <?php
+//        Comprueba en funcion al parametro devuelto si la operacion devulve un error
+        error_reporting(0);
         if(empty($_GET)){
             
         }else{
@@ -128,18 +130,15 @@ and open the template in the editor.
                 if($valor==true){
                     echo '<script>alert("Te has registrado correctamente...");</script>';
                 }
-            }
-            if(($valor=$_GET['incorrecto'])){
+            }else if(($valor=$_GET['incorrecto'])){
                 if($valor==true){
                     echo '<script>alert("Usuario o contraseña incorrectos...");</script>';
                 }
-            }
-            if(($valor=$_GET['existe'])){
+            }else if(($valor=$_GET['existe'])){
                 if($valor==true){
                     echo '<script>alert("El usuario ya existe...");</script>';
                 }
-            }
-            if(($valor=$_GET['passIncorrecta'])){
+            } else if(($valor=$_GET['passIncorrecta'])){
                 if($valor==true){
                     echo '<script>alert("Las contraseñas no coinciden...");</script>';
                 }
@@ -193,32 +192,6 @@ and open the template in the editor.
 
             });
 
-
-//            prueba
-
-            $(function () {
-                $("#dialog").dialog({
-                    autoOpen: false,
-                    show: {
-                        effect: "blind",
-                        duration: 1000
-                    },
-                    hide: {
-                        effect: "explode",
-                        duration: 1000
-                    }
-                });
-
-                $("#opener").on("click", function () {
-                    $("#dialog").dialog("open");
-                });
-            });
-
-
-            function cambiafondo() {
-                document.body.style.backgroundImage = "url('/Trivial/imagenes/ussr.jpg')";
-                document.getElementById('dialog').innerHTML = "<audio autoplay><source src='temazo.mp3' type='audio/mpeg'></audio>";
-            }
         </script>
     </body>
 </html>

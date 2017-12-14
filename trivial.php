@@ -51,7 +51,7 @@ and open the template in the editor.
             var economia;
             var filosofia;
             var usuario = "<?php echo $usuario; ?>";
-            
+
             obtenerNivel();
             console.log(usuario);
             function obtenerNivel() {
@@ -87,14 +87,14 @@ and open the template in the editor.
                     <h1 class="text-center titulo"> Test Selectividad</h1>
                 </div>
             </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <a class="enlace" href="cerrarSesion.php"><button class="btn btn-danger btn-block btn-lg">CERRAR SESIÓN</button></a>
             </div>
-            <div class="row">
-                <div class="col-xs-12">
-                    <a class="enlace" href="cerrarSesion.php"><button class="btn btn-danger btn-block btn-lg">CERRAR SESIÓN</button></a>
-                </div>
-            </div>
+        </div>
 
-        
+
         <div class="container">
             <div class="row">
                 <div class="col-xs-12 botones">
@@ -124,6 +124,7 @@ and open the template in the editor.
                                     <button id="btn-filosofia" class="btn btn-lg btn-success jugar temas" value="filosofia" onclick="iniciaPartida(filosofia); filtrarPorAsignatura('Filosofia')" >Elegir Nivel</button>
                                 </div>
                             </div>
+                            <script>obtenerNivel();</script>
                         </div>
                     </div>
                 </div>
@@ -152,7 +153,7 @@ and open the template in the editor.
                 <div class="col"><br></div>
                 <!--TEMPORIZADOR-->
                 <div clas="row">
-                    <h3 class="text-center titulo">CUENTA ANTRAS</h3>
+                    <h3 class="text-center titulo">CUENTA ATRAS</h3>
                     <div class="progress">
                         <div id="barraProgreso" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:0%">
                             <span id="porcentaje"></span>
@@ -197,10 +198,14 @@ and open the template in the editor.
         //Niveles
         function iniciaPartida(desbloquea) {
             maxNivel = desbloquea;
-            console.log("desbloquea " +desbloquea);
+            console.log("desbloquea " + desbloquea);
             $('#niveles').text("");
             //tiene que mostrar algo para que se pueda elegir el numero de 
             //verbos con el que se va a jugar
+//            if (desbloquea > 10) {
+//                desbloquea = 10;
+//            }
+//            GENERAR BOTONES NIVELES
             console.log("Justo antes de entrar " + desbloquea);
             for (var i = 1; i <= desbloquea; i++) {
                 if (i == desbloquea) {
@@ -263,10 +268,11 @@ and open the template in the editor.
         var modulo;
         var stopBarra;
 
-
+//        Llama al json y guarda las pregunttas y pinta el los botnes de las preguntas y respuestas
         function crearJSON() {
-
+//             var posiciones = new Array(10);
             $.getJSON("js/preguntas.json", function (cuestiones) {
+                
                 longitud = Object.keys(cuestiones["pregunta"]).length;
                 posicion = Math.floor(Math.random() * longitud);
                 correcta = cuestiones["pregunta"][posicion]["correcta"];
@@ -396,7 +402,7 @@ and open the template in the editor.
                 });
             }
         }
-
+//        Reinicia preguntas al cambiar de nivel
         function reinicio() {
             contador = 1;
             aciertos = 0;
@@ -413,7 +419,7 @@ and open the template in the editor.
         function move() {
             var elem = document.getElementById("barraProgreso");
             var width = -2;
-            var id2 = setInterval(frame, 200);
+           var id2 = setInterval(frame, 200);
             function frame() {
                 if ((width >= 100) || (stopBarra == true)) {
                     clearInterval(id2);

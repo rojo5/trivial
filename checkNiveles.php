@@ -1,5 +1,5 @@
 <?php
-
+// Este archivo se enccarga de extraer los niveles del usuario
 $user = $_POST['usuario'];
 
 //$user = "rojo5";
@@ -53,12 +53,13 @@ function consultaNiveles($sql) {
     $arrayNiveles['niveles'] = array();
 
     while ($row = mysqli_fetch_object($resultado)) {
+        //guardo cada fila en un array
         array_push($arrayNiveles['niveles'], $row);
     }
     desconectar($conexion);
     return $arrayNiveles;
 }
-
+//Abro un archivo json
 $archivo2 = "js/niveles.json";
 $file = fopen($archivo2, "w");
 
@@ -66,6 +67,7 @@ $sql = "SELECT nvHistoria, nvLengua, nvEconomia, nvIngles, nvFilosofia FROM usua
 
 $niveles = consultaNiveles($sql);
 print_r($niveles);
+//Codifico el resultado de la consulta en una estructura de JSON
 $contenido = json_encode($niveles, 128);
 
 fwrite($file, $contenido);
